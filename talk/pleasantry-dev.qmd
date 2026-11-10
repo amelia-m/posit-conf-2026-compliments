@@ -1,0 +1,264 @@
+---
+pagetitle: "pleasantry: how a toy R package got built"
+format:
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    theme: simple
+    code-overflow: wrap
+execute:
+  echo: true
+---
+
+```{r}
+#| include: false
+library(pleasantry)
+```
+
+## pleasantry {.center}
+
+### How a toy R package got built, with AI tools
+
+Amelia Miramonti, Lincoln AI meetup
+
+```{r}
+set.seed(7)
+compliment()
+```
+
+::: {.notes}
+pleasantry is a small R package that makes random compliments and farewells.
+This talk is about how it was built: at a workshop with Positron Assistant, then afterwards with Claude Code.
+Every example on these slides is live R output, run with a fixed seed when the deck was rendered, so the jokes are the package's own.
+:::
+
+## What pleasantry is {.smaller}
+
+```{r}
+set.seed(5)
+compliment(shakespearean = TRUE)
+set.seed(1)
+compliment(weirdness = 1)
+set.seed(3)
+compliment(mood = "grumpy")
+```
+
+::: {.notes}
+Four exported functions: `compliment()`, `farewell()`, and an "of the day" version of each.
+`compliment()` has a mood (sincere, grumpy, cheerful, dramatic), a Shakespearean switch, and a `weirdness` dial from 0 to 1.
+Grumpy compliments are backhanded on purpose.
+At weirdness 1 you get moth councils and pigeon diplomacy.
+:::
+
+## Profanity, with a dial
+
+```{r}
+set.seed(4)
+compliment(profanity = "tame")
+set.seed(1)
+compliment(profanity = "mild")
+set.seed(7)
+compliment(profanity = "weird")
+```
+
+Five levels: `"none"`, `"tame"`, `"mild"`, `"strong"`, `"weird"`.
+`"strong"` waits in the appendix, behind a warning.
+
+::: {.notes}
+`profanity` has five levels.
+"tame" is the fudge-muffins level, "weird" swaps swearing for raccoon oracles.
+The five-level argument is itself a result of the development story: it started as two arguments that said the same thing, and was merged into one.
+The strong level is real four-letter words; it is in the appendix after a content warning, not in the main talk.
+:::
+
+## Stage 1: the workshop {.smaller}
+
+- posit::conf(2026), Modern R workflow workshop, Monday 14 September 2026
+- Positron Assistant, through Posit AI Pass: Claude Sonnet 5 for the first 80 replies, then Kimi K3 for the last 83
+- From "Create a new R package called compliment" to moods, farewells, profanity, a README and a pkgdown index
+- The conversation ends on 2 October with: *"Your Posit AI Pass credits have been depleted."*
+
+::: {.notes}
+The package started at the workshop as `compliment`.
+Amelia set each feature in her own words and tested the output in the console herself.
+The model behind Positron Assistant changed partway through workshop day; the export records both.
+Work continued on 28 September and 2 October, and the conversation stops mid-task when the workshop credits ran out.
+The first git commit is 28 September; the whole package arrived in one commit.
+:::
+
+## The `weirdness` dial took four tries {.smaller}
+
+1. A `mode` argument: `"classic"` or `"unhinged"`
+2. A number from 0 to 1, but one coin flip per compliment: 0 and 0.5 gave the *same* compliment that day
+3. A coin flip per word ("Option A")
+4. Three tiers, classic, quirky and bizarre, blended by weight ("Option B")
+
+About a dozen prompts were the assistant's own suggested next step, sent back word for word.
+Pair programming, where the pair also drafts your half.
+
+::: {.notes}
+Design 2 replaced `mode` when the request was to add a parameter, and Amelia found out when an old call failed.
+She also noticed that weirdness 0 and 0.5 gave identical output, and asked why: one random draw decided everything.
+After that, the next redesign came to her as options first, and she chose: "start with a but document a plan to implement b later."
+The suggested-next-step pattern is the tool working as designed: it offers the next step and you can click it.
+:::
+
+## Stage 2: Claude Code {.smaller}
+
+- 9 October: renamed `compliment` to **pleasantry** (it makes farewells too, and a pleasantry is also a jest), moved to the repository root
+- 13 October: pkgdown site built and deployed by GitHub Actions
+- From 24 October: one long Claude Code conversation: reviews, fixes, expanded word lists, word groups
+- Four pull requests, all merged by Amelia
+
+Models: commits from 9 to 13 October name Claude Opus 5; the later conversation ran on Claude Opus 5.5.
+
+::: {.notes}
+The October rename and move came from a Claude Code session whose commits carry a Claude Opus 5 trailer.
+That session could not change repository settings, so it said so and left the rename and GitHub Pages to Amelia.
+From late October the work ran in one long Claude Code conversation, resumed in November.
+The last pull request merged on 6 November.
+:::
+
+## Who did what {.smaller}
+
+**Amelia decided**: what to build, which fixes, the word-group design, AI attribution in commits, every push and every merge.
+
+**The agents did**: the code, tests and docs; subagents for the word lists and the reviews, the word-list one working from a written task contract.
+
+**Five review rounds** from 24 October to 5 November, and the main session checked the subagents' work before relying on it.
+
+::: {.notes}
+Pushing and merging are not delegated in this repository: the project profile says they wait for Amelia's yes.
+When an approval to push came before a review had finished, the agent stopped and showed her the new findings first.
+A task contract here is a short brief: scope, what not to touch, and how we will know it is right.
+:::
+
+## How it is checked
+
+- 36 tests in 4 files (testthat edition 3), seeds scoped with `withr`
+- `R CMD check --as-cran`: 0 errors, 0 warnings, 1 note (new submission)
+- Each bug fix came with a test, shown able to fail by breaking the code on purpose
+- pkgdown site rebuilt by GitHub Actions on every push to `main`
+
+::: {.notes}
+The R CMD check result is the one reported in the last fix commit, 4 November.
+"Shown able to fail": the agent broke the code in a throwaway copy and confirmed the new test caught it.
+The only GitHub Actions workflow builds the documentation site; there is no CI check workflow.
+:::
+
+## What went wrong, and what changed {.smaller}
+
+- `.Rbuildignore` comments were live regex: it has no comment syntax. Removed.
+- *"Few people have a energy as creative as yours."* Now `{a}` picks the article.
+- *"remarkably remarkable"*, *"glorious glory"*. Now every word is compared on its first four letters.
+- A profane suffix repeated a word the sentence already had. Now checked after profanity is added.
+- A redraw loop with no exit. Now 100 tries, then an error.
+- 15 MB of transcripts in a 12 KB package. Moved to their own branch.
+
+::: {.notes}
+Most of these were found by review rounds, not by users.
+The article bug was checked over 40,000 strings once fixed, and the review of that fix found "a uninspired" and "a onerous".
+The repeated-word suffix showed up 30 times in 200 runs on the old code; the exact phrase is in the appendix, behind the warning.
+The transcripts move matters because installing from GitHub downloads the default branch.
+:::
+
+## What you could reuse
+
+- Ask for options before a redesign, not after
+- Test the output yourself: the 0 versus 0.5 tie was found in the console
+- Review in rounds, and have a fresh agent do one
+- Keep outward steps (push, merge) as your own yes
+- Keep the transcript: this talk was written from it
+
+::: {.notes}
+Each of these is something that happened in this project.
+The transcripts are public on the repository's dev-transcripts branch, so the dead ends are readable next to the result.
+:::
+
+## AI disclosure {.smaller}
+
+- **Positron Assistant** (Claude Sonnet 5, then Kimi K3, via Posit AI Pass) wrote the package code at the workshop, steered and tested by Amelia.
+- **Claude Code** (Claude Opus 5, then Claude Opus 5.5) did the rename, the move, the review rounds, the fixes and the expanded word lists; Amelia chose the fixes and approved every push and merge.
+- **This deck** was built by Claude Code (Claude Opus 5.5) from research notes on the git history and both transcripts; every claim is traced to its source in `talk/claims.md`, for a fresh reviewer agent and Amelia to check.
+
+::: {.notes}
+The model names come from the transcripts and the commit trailers, not from memory.
+The word lists were chosen by an agent, and the repository's TODO says no person has read them.
+:::
+
+## Links, and goodbye
+
+- Package: <https://github.com/amelia-m/pleasantry>
+- Site: <https://amelia-m.github.io/pleasantry/>
+- Transcripts: the `dev-transcripts` branch
+
+```{r}
+set.seed(8)
+farewell(mood = "grumpy")
+```
+
+::: {.notes}
+Install with `pak::pak("amelia-m/pleasantry")`.
+The README shows how to get a compliment every time R starts.
+:::
+
+# Appendix {.center}
+
+## Content warning {.center}
+
+The next slides show the `"strong"` profanity level.
+It is real swearing.
+
+## `profanity = "strong"`
+
+```{r}
+set.seed(3)
+compliment(mood = "dramatic", profanity = "strong")
+set.seed(8)
+compliment(mood = "dramatic", profanity = "strong")
+```
+
+## The repeated-word bug, uncensored
+
+In the dramatic mood, a compliment using "magnificent" could end with the suffix "you magnificent bastard".
+On the old code the test sentence did it 30 times in 200 runs (commit `496768e`).
+The fix leaves out any profanity phrase that shares a word with the sentence.
+
+## The stem check
+
+`R/banks.R` at `f2d62c1`:
+
+```r
+word_stems <- function(text) {
+  words <- unlist(strsplit(tolower(gsub("\\{[^}]*\\}", " ", text)), "[^a-z]+"))
+  unique(substr(words[nchar(words) >= 4], 1, 4))
+}
+
+stems_clash <- function(x, y) {
+  length(intersect(word_stems(x), word_stems(y))) > 0
+}
+```
+
+## Timeline {.smaller}
+
+| Date (2026) | What |
+|---|---|
+| 14 Sep | Workshop; Positron Assistant conversation begins |
+| 28 Sep | First commit, whole package at once |
+| 2 Oct | Conversation ends: credits depleted |
+| 9 Oct | Rename to pleasantry, move to root (PR 1) |
+| 13 Oct | Review fixes, pkgdown workflow (PR 2) |
+| 24 Oct | Claude Code conversation begins with a code review |
+| 31 Oct | AI attribution decided; Air and `.gitattributes` |
+| 2 Nov | "Toy package", one sentence per line (PR 3) |
+| 6 Nov | Word groups and repeat fixes merged (PR 4) |
+
+## Review rounds {.smaller}
+
+| When | Review | Found |
+|---|---|---|
+| 24 Oct | `/code-review`, high effort | 10 findings on PR 2, all fixed |
+| 31 Oct | combo-review subagent | 57 awkward word combinations |
+| 3 Nov | `requesting-code-review` subagent | 3 important: README conflict, docs, NEWS |
+| 4 Nov | `/code-review`, high effort | repeated word from profanity; redraw loop |
+| 5 Nov | fresh bug-hunt subagent | nothing serious; one wrong NEWS count |
