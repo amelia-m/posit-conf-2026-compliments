@@ -80,7 +80,7 @@ The strong level is real four-letter words; it is in the appendix after a conten
 
 ::: {.notes}
 The package started at the workshop as `compliment`.
-Amelia set each feature in her own words and tested the output in the console herself.
+Amelia chose the features and tested the output in the console herself.
 The model behind Positron Assistant changed partway through workshop day; the export records both.
 Work continued on 28 September and 2 October, and the conversation stops mid-task when the workshop credits ran out.
 The first git commit is 28 September; the whole package arrived in one commit.
@@ -107,25 +107,26 @@ The suggested-next-step pattern is the tool working as designed: it offers the n
 
 - 9 October: renamed `compliment` to **pleasantry** (it makes farewells too, and a pleasantry is also a jest), moved to the repository root
 - 13 October: pkgdown site built and deployed by GitHub Actions
-- From 24 October: one long Claude Code conversation: reviews, fixes, expanded word lists, word groups
-- Four pull requests, all merged by Amelia
+- From 23 October: mostly one long Claude Code conversation: reviews, fixes, expanded word lists, word groups
+- Four pull requests, each merged on Amelia's yes
 
 Models: commits from 9 to 13 October name Claude Opus 5; the later conversation ran on Claude Opus 5.5.
 
 ::: {.notes}
 The October rename and move came from a Claude Code session whose commits carry a Claude Opus 5 trailer.
 That session could not change repository settings, so it said so and left the rename and GitHub Pages to Amelia.
-From late October the work ran in one long Claude Code conversation, resumed in November.
-The last pull request merged on 6 November.
+From late October most of the work ran in one long Claude Code conversation, resumed in November; the 2 November pull request came from a separate cloud session.
+The last pull request merged on 6 November, after Amelia wrote: "If it's ready to merge do it."
+It was, and the agent did.
 :::
 
 ## Who did what {.smaller}
 
-**Amelia decided**: what to build, which fixes, the word-group design, AI attribution in commits, every push and every merge.
+**Amelia decided**: what to build, which fixes, the word-group design, AI attribution in commits, every merge, and every push from her machine.
 
-**The agents did**: the code, tests and docs; subagents for the word lists and the reviews, the word-list one working from a written task contract.
+**The agents did**: the code, tests and docs; subagents for the word lists and some of the reviews, the word-list one working from a written task contract.
 
-**Five review rounds** from 24 October to 5 November, and the main session checked the subagents' work before relying on it.
+**Five review rounds** from 23 October to 4 November, and the main session checked the subagents' work before relying on it.
 
 ::: {.notes}
 Pushing and merging are not delegated in this repository: the project profile says they wait for Amelia's yes.
@@ -136,8 +137,8 @@ A task contract here is a short brief: scope, what not to touch, and how we will
 ## How it is checked
 
 - 36 tests in 4 files (testthat edition 3), seeds scoped with `withr`
-- `R CMD check --as-cran`: 0 errors, 0 warnings, 1 note (new submission)
-- Each bug fix came with a test, shown able to fail by breaking the code on purpose
+- `R CMD check --as-cran --no-manual`: 0 errors, 0 warnings, 1 note (new submission)
+- From 31 October, each bug fix came with a test, shown able to fail by breaking the code on purpose
 - pkgdown site rebuilt by GitHub Actions on every push to `main`
 
 ::: {.notes}
@@ -150,7 +151,7 @@ The only GitHub Actions workflow builds the documentation site; there is no CI c
 
 - `.Rbuildignore` comments were live regex: it has no comment syntax. Removed.
 - *"Few people have a energy as creative as yours."* Now `{a}` picks the article.
-- *"remarkably remarkable"*, *"glorious glory"*. Now every word is compared on its first four letters.
+- *"remarkably remarkable"*, *"glorious glory"*. Now every word of four letters or more is compared on its first four.
 - A profane suffix repeated a word the sentence already had. Now checked after profanity is added.
 - A redraw loop with no exit. Now 100 tries, then an error.
 - 15 MB of transcripts in a 12 KB package. Moved to their own branch.
@@ -178,7 +179,7 @@ The transcripts are public on the repository's dev-transcripts branch, so the de
 ## AI disclosure {.smaller}
 
 - **Positron Assistant** (Claude Sonnet 5, then Kimi K3, via Posit AI Pass) wrote the package code at the workshop, steered and tested by Amelia.
-- **Claude Code** (Claude Opus 5, then Claude Opus 5.5) did the rename, the move, the review rounds, the fixes and the expanded word lists; Amelia chose the fixes and approved every push and merge.
+- **Claude Code** (Claude Opus 5, then Claude Opus 5.5) did the rename, the move, the review rounds, the fixes and the expanded word lists; Amelia chose the fixes and approved every merge.
 - **This deck** was built by Claude Code (Claude Opus 5.5) from research notes on the git history and both transcripts; every claim is traced to its source in `talk/claims.md`, for a fresh reviewer agent and Amelia to check.
 
 ::: {.notes}
@@ -248,7 +249,7 @@ stems_clash <- function(x, y) {
 | 2 Oct | Conversation ends: credits depleted |
 | 9 Oct | Rename to pleasantry, move to root (PR 1) |
 | 13 Oct | Review fixes, pkgdown workflow (PR 2) |
-| 24 Oct | Claude Code conversation begins with a code review |
+| 23 Oct | Claude Code conversation begins with a code review |
 | 31 Oct | AI attribution decided; Air and `.gitattributes` |
 | 2 Nov | "Toy package", one sentence per line (PR 3) |
 | 6 Nov | Word groups and repeat fixes merged (PR 4) |
@@ -257,8 +258,8 @@ stems_clash <- function(x, y) {
 
 | When | Review | Found |
 |---|---|---|
-| 24 Oct | `/code-review`, high effort | 10 findings on PR 2, all fixed |
+| 23 Oct | `/code-review`, high effort | 10 findings on PR 2, all fixed |
 | 31 Oct | combo-review subagent | 57 awkward word combinations |
 | 3 Nov | `requesting-code-review` subagent | 3 important: README conflict, docs, NEWS |
-| 4 Nov | `/code-review`, high effort | repeated word from profanity; redraw loop |
-| 5 Nov | fresh bug-hunt subagent | nothing serious; one wrong NEWS count |
+| 3 Nov | `/code-review`, high effort | repeated word from profanity; redraw loop |
+| 4 Nov | fresh bug-hunt subagent | nothing serious; one wrong NEWS count |

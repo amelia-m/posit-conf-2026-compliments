@@ -70,6 +70,18 @@ Live R output on slides is generated at render time by the installed package and
 - Slide 10 ("What you could reuse") is the builder's reading of what the project shows, not her stated lessons; she may want to reword it in her own voice.
 - The README's workshop date sentence was written by an agent in `5256f44`; the transcript timestamps agree, but Amelia is the source closest to the event.
 
-## Not told, for Amelia
+## Corrections after the fresh review (2026-11-10)
 
-- A folder delete during the workshop that was confirmed and then regretted; the outcome is not recorded, so it is left out.
+The fresh reviewer checked 54 claims against their sources; its full table is in the main session's scratch notes, not in this repository.
+These rows replace or qualify rows above.
+
+| Slide | Claim now | Source | Checked by |
+|---|---|---|---|
+| 4 notes | "Amelia chose the features" (was "set each feature in her own words") | Positron transcript: several features were requested by sending the assistant's suggestion back | reviewer |
+| 6 | Four pull requests, each merged on Amelia's yes (was "all merged by Amelia") | PR 4 was merged by Claude Code with `gh pr merge 4` after her "If it's ready to merge do it", second Claude Code session file, 2026-11-07T01:06Z | reviewer; main session |
+| 6 notes | Mostly one long conversation; the 2 November pull request came from a separate cloud session | `gh pr view 3` head branch `claude/toy-project`; commits `f473799`, `a95de40` | reviewer |
+| 6, 7, appendix | Dates in local (US Central) time: conversation starts 23 October; review rounds 23 Oct, 31 Oct, 3 Nov, 3 Nov, 4 Nov | Transcript UTC timestamps 2026-10-24T01:09Z, 2026-11-04T02:11Z, 2026-11-05T04:36Z, converted with the git offsets (-0500, -0600) | reviewer |
+| 7, 11 | Amelia approved every merge, and every push from her machine (was "every push") | Pushes by the October and 2 November cloud sessions have no transcript here | reviewer |
+| 7 | Subagents for the word lists and some of the reviews | Rounds 1 and 4 ran in the main session | reviewer |
+| 8 | `--no-manual` added; "from 31 October, each bug fix came with a test" (was "each bug fix") | `496768e` message; `dfb3f17` changed no test file | reviewer |
+| 9 | Words of four letters or more are compared | `R/banks.R` `word_stems()` at `f2d62c1` | reviewer |

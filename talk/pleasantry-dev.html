@@ -1156,7 +1156,7 @@ display:block!important;
 <li>The conversation ends on 2 October with: <em>“Your Posit AI Pass credits have been depleted.”</em></li>
 </ul>
 <aside class="notes">
-<p>The package started at the workshop as <code>compliment</code>. Amelia set each feature in her own words and tested the output in the console herself. The model behind Positron Assistant changed partway through workshop day; the export records both. Work continued on 28 September and 2 October, and the conversation stops mid-task when the workshop credits ran out. The first git commit is 28 September; the whole package arrived in one commit.</p>
+<p>The package started at the workshop as <code>compliment</code>. Amelia chose the features and tested the output in the console herself. The model behind Positron Assistant changed partway through workshop day; the export records both. Work continued on 28 September and 2 October, and the conversation stops mid-task when the workshop credits ran out. The first git commit is 28 September; the whole package arrived in one commit.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1197,12 +1197,12 @@ display:block!important;
 <ul>
 <li>9 October: renamed <code>compliment</code> to <strong>pleasantry</strong> (it makes farewells too, and a pleasantry is also a jest), moved to the repository root</li>
 <li>13 October: pkgdown site built and deployed by GitHub Actions</li>
-<li>From 24 October: one long Claude Code conversation: reviews, fixes, expanded word lists, word groups</li>
-<li>Four pull requests, all merged by Amelia</li>
+<li>From 23 October: mostly one long Claude Code conversation: reviews, fixes, expanded word lists, word groups</li>
+<li>Four pull requests, each merged on Amelia’s yes</li>
 </ul>
 <p>Models: commits from 9 to 13 October name Claude Opus 5; the later conversation ran on Claude Opus 5.5.</p>
 <aside class="notes">
-<p>The October rename and move came from a Claude Code session whose commits carry a Claude Opus 5 trailer. That session could not change repository settings, so it said so and left the rename and GitHub Pages to Amelia. From late October the work ran in one long Claude Code conversation, resumed in November. The last pull request merged on 6 November.</p>
+<p>The October rename and move came from a Claude Code session whose commits carry a Claude Opus 5 trailer. That session could not change repository settings, so it said so and left the rename and GitHub Pages to Amelia. From late October most of the work ran in one long Claude Code conversation, resumed in November; the 2 November pull request came from a separate cloud session. The last pull request merged on 6 November, after Amelia wrote: “If it’s ready to merge do it.” It was, and the agent did.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1217,9 +1217,9 @@ display:block!important;
 </section>
 <section id="who-did-what" class="slide level2 smaller">
 <h2>Who did what</h2>
-<p><strong>Amelia decided</strong>: what to build, which fixes, the word-group design, AI attribution in commits, every push and every merge.</p>
-<p><strong>The agents did</strong>: the code, tests and docs; subagents for the word lists and the reviews, the word-list one working from a written task contract.</p>
-<p><strong>Five review rounds</strong> from 24 October to 5 November, and the main session checked the subagents’ work before relying on it.</p>
+<p><strong>Amelia decided</strong>: what to build, which fixes, the word-group design, AI attribution in commits, every merge, and every push from her machine.</p>
+<p><strong>The agents did</strong>: the code, tests and docs; subagents for the word lists and some of the reviews, the word-list one working from a written task contract.</p>
+<p><strong>Five review rounds</strong> from 23 October to 4 November, and the main session checked the subagents’ work before relying on it.</p>
 <aside class="notes">
 <p>Pushing and merging are not delegated in this repository: the project profile says they wait for Amelia’s yes. When an approval to push came before a review had finished, the agent stopped and showed her the new findings first. A task contract here is a short brief: scope, what not to touch, and how we will know it is right.</p>
 <style type="text/css">
@@ -1238,8 +1238,8 @@ display:block!important;
 <h2>How it is checked</h2>
 <ul>
 <li>36 tests in 4 files (testthat edition 3), seeds scoped with <code>withr</code></li>
-<li><code>R CMD check --as-cran</code>: 0 errors, 0 warnings, 1 note (new submission)</li>
-<li>Each bug fix came with a test, shown able to fail by breaking the code on purpose</li>
+<li><code>R CMD check --as-cran --no-manual</code>: 0 errors, 0 warnings, 1 note (new submission)</li>
+<li>From 31 October, each bug fix came with a test, shown able to fail by breaking the code on purpose</li>
 <li>pkgdown site rebuilt by GitHub Actions on every push to <code>main</code></li>
 </ul>
 <aside class="notes">
@@ -1261,7 +1261,7 @@ display:block!important;
 <ul>
 <li><code>.Rbuildignore</code> comments were live regex: it has no comment syntax. Removed.</li>
 <li><em>“Few people have a energy as creative as yours.”</em> Now <code>{a}</code> picks the article.</li>
-<li><em>“remarkably remarkable”</em>, <em>“glorious glory”</em>. Now every word is compared on its first four letters.</li>
+<li><em>“remarkably remarkable”</em>, <em>“glorious glory”</em>. Now every word of four letters or more is compared on its first four.</li>
 <li>A profane suffix repeated a word the sentence already had. Now checked after profanity is added.</li>
 <li>A redraw loop with no exit. Now 100 tries, then an error.</li>
 <li>15 MB of transcripts in a 12 KB package. Moved to their own branch.</li>
@@ -1307,7 +1307,7 @@ display:block!important;
 <h2>AI disclosure</h2>
 <ul>
 <li><strong>Positron Assistant</strong> (Claude Sonnet 5, then Kimi K3, via Posit AI Pass) wrote the package code at the workshop, steered and tested by Amelia.</li>
-<li><strong>Claude Code</strong> (Claude Opus 5, then Claude Opus 5.5) did the rename, the move, the review rounds, the fixes and the expanded word lists; Amelia chose the fixes and approved every push and merge.</li>
+<li><strong>Claude Code</strong> (Claude Opus 5, then Claude Opus 5.5) did the rename, the move, the review rounds, the fixes and the expanded word lists; Amelia chose the fixes and approved every merge.</li>
 <li><strong>This deck</strong> was built by Claude Code (Claude Opus 5.5) from research notes on the git history and both transcripts; every claim is traced to its source in <code>talk/claims.md</code>, for a fresh reviewer agent and Amelia to check.</li>
 </ul>
 <aside class="notes">
@@ -1423,7 +1423,7 @@ display:block!important;
 <td>Review fixes, pkgdown workflow (PR 2)</td>
 </tr>
 <tr class="even">
-<td>24 Oct</td>
+<td>23 Oct</td>
 <td>Claude Code conversation begins with a code review</td>
 </tr>
 <tr class="odd">
@@ -1458,7 +1458,7 @@ display:block!important;
 </thead>
 <tbody>
 <tr class="odd">
-<td>24 Oct</td>
+<td>23 Oct</td>
 <td><code>/code-review</code>, high effort</td>
 <td>10 findings on PR 2, all fixed</td>
 </tr>
@@ -1473,12 +1473,12 @@ display:block!important;
 <td>3 important: README conflict, docs, NEWS</td>
 </tr>
 <tr class="even">
-<td>4 Nov</td>
+<td>3 Nov</td>
 <td><code>/code-review</code>, high effort</td>
 <td>repeated word from profanity; redraw loop</td>
 </tr>
 <tr class="odd">
-<td>5 Nov</td>
+<td>4 Nov</td>
 <td>fresh bug-hunt subagent</td>
 <td>nothing serious; one wrong NEWS count</td>
 </tr>
